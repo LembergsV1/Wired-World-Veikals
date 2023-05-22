@@ -79,7 +79,7 @@ export default function Featured({product}){
                                 <RevealWrapper origin={'down'} delay={0}>
                                 <ButtonsWrapper>
                                     <ButtonLink href={'/product/'+product._id} outline={1} prpl={1} >Vairāk info</ButtonLink>
-                                    <FlyingButton feat={1} _id={product._id} src={product.images?.[0]}>
+                                    <FlyingButton main={1} _id={product._id} src={product.images?.[0]}>
                                         <CartIcon/>
                                             Pievienot Grozam
                                         </FlyingButton>          

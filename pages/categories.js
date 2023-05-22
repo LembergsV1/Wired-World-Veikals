@@ -8,6 +8,12 @@ import Link from "next/link";
 import styled from "styled-components";
 import { RevealWrapper } from "next-reveal";
 
+import { mongooseConnect } from "@/lib/mongoose";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
+import { WishedProduct } from "@/models/WishedProduct";
+
+
 const CategoryGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -48,7 +54,7 @@ const ShowAllSquare = styled(Link)`
   text-decoration: none;
 `;
 
-export default function CategoriesPage({ mainCategories, categoriesProducts }) {
+export default function CategoriesPage({ mainCategories, categoriesProducts, wishedProducts=[]}) {
   return (
     <>
       <Header />
@@ -64,7 +70,7 @@ export default function CategoriesPage({ mainCategories, categoriesProducts }) {
             <CategoryGrid>
               {categoriesProducts[cat._id].map((p,index) => (
                 <RevealWrapper delay={index*50}>
-                  <ProductBox key={p._id} {...p} /> 
+                  <ProductBox key={p._id} {...p} wished={wishedProducts.includes(p._id)}/> 
                 </RevealWrapper>
               ))}
               <RevealWrapper delay={categoriesProducts[cat._id].length*50}>
@@ -80,10 +86,12 @@ export default function CategoriesPage({ mainCategories, categoriesProducts }) {
   );
 }
 
-export async function getServerSideProps(){
+export async function getServerSideProps(ctx){
+    await mongooseConnect();
     const categories = await Category.find();
     const mainCategories = categories.filter(c => !c.parent);
     const categoriesProducts = {};
+    const allFetchedProductsId = [];
     for (const mainCat of mainCategories){
         const mainCatId = mainCat._id.toString();
         const  childCatIds = categories
@@ -91,12 +99,22 @@ export async function getServerSideProps(){
             .map(c => c._id.toString());
         const categoriesIds = [mainCatId, ...childCatIds];
         const products = await Product.find({category: categoriesIds}, null, {limit:3, sort:{'_id':-1}});
-        categoriesProducts[mainCat._id] = products;
-    }
+        allFetchedProductsId.push(...products.map(p => p._id.toString()));
+        categoriesProducts[mainCat._id] = products; 
+      }
+        
+        const session = await getServerSession(ctx.req, ctx.res, authOptions);
+        const wishedProducts = session?.user 
+          ? await WishedProduct.find({
+            userEmail:session?.user.email,
+            product: allFetchedProductsId,
+          }) 
+          : [];
     return{
         props: {
             mainCategories: JSON.parse(JSON.stringify(mainCategories)),
             categoriesProducts: JSON.parse(JSON.stringify(categoriesProducts)),
+            wishedProducts: wishedProducts.map(i => i.product.toString()),
         },
     };
 }
