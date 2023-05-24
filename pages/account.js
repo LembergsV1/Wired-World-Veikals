@@ -11,6 +11,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Spinner from "@/components/Spinner";
 import ProductBox from "@/components/ProductBox";
+import Tabs from "@/components/Tabs";
+import SingleOrder from "@/components/SingleOrder";
 
 const ColsWrapper = styled.div`
     display:grid;
@@ -42,6 +44,9 @@ export default function AccountPage(){
     const [addressLoaded, setAddressLoaded] = useState(true);
     const [wishlistLoaded, setWishlistLoaded] = useState(true);
     const [wishedProducts, setWishedProducts] = useState([]);
+    const [ordersLoaded, setOrdersLoaded] = useState(true);
+    const [activeTab, setActiveTab] = useState('Pasūtījumi');
+    const [orders, setOrders] = useState([]);
     async function logout(){
         await signOut({
             callbackUrl: process.env.NEXT_PUBLIC_URL,
@@ -60,6 +65,7 @@ export default function AccountPage(){
         }
             setAddressLoaded(false);
             setWishlistLoaded(false);
+            setOrdersLoaded(false);
             axios.get('api/address').then(response => {
                 setName(response.data.name);
                 setEmail(response.data.email);
@@ -72,11 +78,15 @@ export default function AccountPage(){
             axios.get('/api/wishlist').then(response =>{
                 setWishedProducts(response.data.map(wp => wp.product));
                 setWishlistLoaded(true);
-            })
+            });
+            axios.get('/api/orders').then(response => {
+                setOrders(response.data);
+                setOrdersLoaded(true);
+            });
     }, [session]);
     function productRemovedFromWishList(idToRemove){
         setWishedProducts(products => {
-            return [...products.filter(p => p._id.toString() !== idToRemove)]
+            return [...products.filter(p => p?._id.toString() !== idToRemove)]
         });
     }
     return(
@@ -87,31 +97,54 @@ export default function AccountPage(){
                     <div>
                     <RevealWrapper delay={0}>
                         <WhiteBox>
-                            <h2>Vēlmju saraksts</h2>
-                            {!wishlistLoaded && (
-                                
-                                <Spinner fullWidth={true} />
-                            )}
-                            {wishlistLoaded && (
-                                <>
-                                <WishedProductsGrid>
-                                    {wishedProducts.length > 0 && wishedProducts.map(wp => (
-                                    <ProductBox key={wp._id} {...wp} wished={true} 
-                                        onRemoveFromWishlist={productRemovedFromWishList} />
-                                ))}
-                                </WishedProductsGrid>
-                                    {wishedProducts.length === 0 && (
+                            <Tabs 
+                                tabs={['Pasūtījumi','Vēlmju saraksts']} 
+                                active={activeTab} 
+                                onChange={setActiveTab}
+                                />
+                                {activeTab === 'Pasūtījumi' && (
                                     <>
-                                        {session && (
-                                            <p>Vai tiešām neko nevēlies? :/</p>
+                                        {!ordersLoaded && (
+                                            <Spinner fullWidth={true} />
                                         )}
-                                        {!session && (
-                                            <p>Lai izveidotu vēlmju sarakstu ir nepieciešams profils</p>
-                                        )}
+                                        {ordersLoaded && (
+                                            <div>
+                                                {orders.length === 0 && (
+                                                    <p>Pieslēdzieties lai redzētu savus pasūtījumus</p>
+                                                )}
+                                                {orders.length > 0 && orders.map(o => (
+                                                    <SingleOrder {...o} />
+                                                ))}
+                                            </div>
+                                        )} 
+                                    </>
+                                )}
+                                {activeTab === 'Vēlmju saraksts' && (
+                                <>
+                                {!wishlistLoaded && (
+                                    <Spinner fullWidth={true} />
+                                )}
+                                {wishlistLoaded && (
+                                    <>
+                                    <WishedProductsGrid>
+                                        {wishedProducts.length > 0 && wishedProducts.map(wp => (
+                                        <ProductBox key={wp?._id} {...wp} wished={true} 
+                                            onRemoveFromWishlist={productRemovedFromWishList} />
+                                    ))}
+                                    </WishedProductsGrid>
+                                        {wishedProducts.length === 0 && (
+                                        <>
+                                            {session && (
+                                                <p>Vai tiešām neko nevēlies? :/</p>
+                                            )}
+                                            {!session && (
+                                                <p>Lai izveidotu vēlmju sarakstu ir nepieciešams profils</p>
+                                            )}
+                                        </>
+                                    )}
                                     </>
                                 )}
                                 </>
-                                
                             )}
                         </WhiteBox>
                     </RevealWrapper> 
