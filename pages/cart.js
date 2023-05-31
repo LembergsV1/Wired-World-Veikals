@@ -18,6 +18,21 @@ const ColumnsWrapper = styled.div`
     }
     gap: 40px;
     margin-top: 40px;
+    margin-bottom: 40px;
+    table thead tr th:nth-child(3),
+    table tbody tr td:nth-child(3),
+    table tbody tr.subtotal td:nth-child(2){
+        text-align: right;
+    }
+    table tr.subtotal td{
+        padding: 10px 0;
+    }
+    table tbody tr.subtotal td:nth-child(2) {
+        font-size: 1.4rem;
+    }
+    tr.total td{
+        font-weight: bold;
+    }
 `;
 
 const Box = styled.div`
@@ -81,6 +96,7 @@ export default function CartPage(){
     const [streetAdress, setStreetAdress] = useState('');
     const [country, setCountry] = useState('');
     const [isSuccess, setIsSuccess] = useState(false);
+    const [shippingFee, setShippingFee] = useState(null);
 
     useEffect(() => {
         if (cartProducts.length > 0){
@@ -100,7 +116,9 @@ export default function CartPage(){
             setIsSuccess(true);
             clearCart();
         }
-        
+        axios.get('/api/settings?name=shippingFee').then(res => {
+            setShippingFee(res.data.value);
+        })
     }, []);
     useEffect(() => {
         if(!session){
@@ -130,11 +148,12 @@ export default function CartPage(){
             window.location = response.data.url;
         }
     }
-    let total = 0;
+    let productsTotal = 0;
     for(const productId of cartProducts){
         const price = products.find(p => p._id === productId)?.price || 0;
-        total += price;
+        productsTotal += price;
     }
+
 
     if (isSuccess) {
         return(
@@ -193,10 +212,17 @@ export default function CartPage(){
                                                 <td>€{cartProducts.filter(id => id === product._id).length * product.price}</td>
                                             </tr>
                                         ))}
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td>€{total}</td>
+                                    <tr className="subtotal">
+                                        <td colSpan={2}>Prece:</td>
+                                        <td>€{productsTotal}</td>
+                                    </tr>
+                                    <tr className="subtotal">
+                                        <td colSpan={2}>Piegāde:</td>
+                                        <td>€{shippingFee}</td>
+                                    </tr>
+                                    <tr className="subtotal total">
+                                        <td colSpan={2}>Kopā:</td>
+                                        <td>€{productsTotal + parseInt(shippingFee || 0)}</td>
                                     </tr>
                                 </tbody>
                             </Table>
