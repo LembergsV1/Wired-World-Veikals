@@ -8,8 +8,6 @@ import { CartContext } from "./CartContext";
 import FlyingButton from "./FlyingButton";
 import {RevealWrapper} from  'next-reveal'
 
-
-
 const Backdrop = styled.div`
     background-color: #fff;
     color:#fff;
@@ -42,11 +40,13 @@ const ColumnsWrapper = styled.div`
     }
     div:nth-child(1){
         order:2;
+        margin-left: auto;
+        margin-right: auto;
     }
    
     @media screen and (min-width: 768px){
         grid-template-columns: .8fr 1.2fr;
-        div:nth-child(1){
+        & > div:nth-child(1) {
             order:1;
         }
         img{
@@ -58,11 +58,29 @@ const ColumnsWrapper = styled.div`
 const Column = styled.div`
     display: flex;
     align-items center;
+
 `;
 const ButtonsWrapper = styled.div`
   display: flex;
   margin-top: 15px;
   gap:10px;
+`;
+
+const CenterImg = styled.div`
+    display: flex;
+    align-items: center;
+    justify-contet: center;
+    width: 100%;
+`;
+
+const ImgColumn = styled(Column)`
+    & > div {
+        width: 100%;
+    }
+`;
+
+const ContentWrapper = styled.div`
+    text-align: center;
 `;
 
 export default function Featured({product}){
@@ -73,25 +91,27 @@ export default function Featured({product}){
                     <Column>
                         <div>
                         <RevealWrapper origin={'down'} delay={0}>
-                                <Title>{product.title}</Title>
-                                <Apr>{product.description}</Apr>
-                        </RevealWrapper>
-                                <RevealWrapper origin={'down'} delay={0}>
-                                <ButtonsWrapper>
-                                    <ButtonLink href={'/product/'+product._id} outline={1} prpl={1} >Vairāk info</ButtonLink>
+                        <ContentWrapper>
+                            <Title>{product.title}</Title>
+                            <Apr>{product.description}</Apr>
+                            <ButtonsWrapper>
+                            <ButtonLink href={'/product/'+product._id} outline={1} prpl={1} >Vairāk info</ButtonLink>
                                     <FlyingButton main={1} _id={product._id} src={product.images?.[0]}>
                                         <CartIcon/>
                                             Pievienot Grozam
-                                        </FlyingButton>          
-                                </ButtonsWrapper> 
-                                </RevealWrapper>
+                                </FlyingButton>
+                            </ButtonsWrapper>
+                        </ContentWrapper>
+                    </RevealWrapper>
                         </div>
                     </Column>
-                    <Column>
+                    <ImgColumn>
                     <RevealWrapper>
-                        <img className={'main'} src="https://ecomexam.s3.amazonaws.com/1683806196938.jpg"/>
+                        <CenterImg>
+                            <img className={'main'} src={product.images?.[0]}/>
+                        </CenterImg> 
                     </RevealWrapper>
-                    </Column>
+                    </ImgColumn>
                 </ColumnsWrapper>  
             </Center>
         </Backdrop>
