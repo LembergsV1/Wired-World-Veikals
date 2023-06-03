@@ -16,9 +16,9 @@ const ImageButtons = styled.div`
     margin-top: 10px;
   `;
 const ImageButton = styled.div`
-    border: 2px solid #75004B;
+    border: 2px solid #296E85;
     ${props => props.active ? `
-      border-color: #ff007f;
+      border-color: #000C66;
     ` : `
       border-color: transparent;
     `}

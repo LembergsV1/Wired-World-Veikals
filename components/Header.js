@@ -7,7 +7,7 @@ import BurgerIcon from "./icons/Burger";
 import SearchIcon from "./icons/Search";
 
 const StyledHeader = styled.header`
-    background-color: #75004B;
+    background-color: #296E85;
     position:sticky;
     top:0;
     z-index: 10;
@@ -37,7 +37,7 @@ const StyledNav = styled.nav`
     left: 0px;
     right: 0;
     padding: 70px 20px 20px;
-    background-color: #75004B;
+    background-color: #296E85;
     @media screen and (min-width: 768px){
         display:flex;
         position: static;

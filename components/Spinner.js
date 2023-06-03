@@ -1,3 +1,4 @@
+import { primary } from "@/lib/colors";
 import { FadeLoader } from "react-spinners";
 import styled from "styled-components";
 
@@ -12,7 +13,7 @@ const Spin =styled.div`
 export default function Spinner({fullWidth}){
     return(
         <Spin fullWidth={fullWidth}>
-            <FadeLoader speedMultiplier={3} color={'#FC0FC0'} />
+            <FadeLoader speedMultiplier={3} color={primary} />
         </Spin> 
     );
 }

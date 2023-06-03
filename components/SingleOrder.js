@@ -3,7 +3,7 @@ import styled from "styled-components";
 const StyledOrder = styled.div`
     margin:10px 0;
     padding:10px 0;
-    border-bottom:1px solid red;
+    border-bottom:1px solid blue;
     display:flex;
     gap:20px;
     align-itmes:center;

@@ -21,7 +21,7 @@ ${props => props.block && css`
     width: 100%;
 `}
 ${props => props.prpl && !props.outline && css`
-    background-color: #75004B;
+    background-color: #296E85;
     color:#fff;
 `}
 ${props => props.prpl && props.outline && css`

@@ -58,12 +58,12 @@ const ColumnsWrapper = styled.div`
 const Column = styled.div`
     display: flex;
     align-items center;
-
 `;
 const ButtonsWrapper = styled.div`
-  display: flex;
-  margin-top: 15px;
-  gap:10px;
+    display: flex;
+    gap:10px;
+    margin-top:25px;
+    align-items: center;
 `;
 
 const CenterImg = styled.div`

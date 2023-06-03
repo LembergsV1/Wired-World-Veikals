@@ -51,7 +51,7 @@ const ProductImageBox = styled.div`
 width: 70px;
 height: 100px;
 padding: 2px;
-border: 1px solid #75004B;
+border: 1px solid #296E85;
 display:flex;
 align-items: center;
 justify-content: center;

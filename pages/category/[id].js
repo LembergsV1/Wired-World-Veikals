@@ -23,7 +23,7 @@ const FiltersA = styled.div`
 `;
 
 const FiltersB = styled.div`
-    background-color: #FFC0CB;
+    background-color: #ADD8E6;
     padding: 5px 10px;
     border-radius: 5px;
     display: flex;
