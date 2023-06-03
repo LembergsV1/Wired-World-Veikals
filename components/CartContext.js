@@ -19,13 +19,16 @@ export function CartContextProvider({children}){
         setCartProducts(prev => [...prev,productId]);
     }
     function removeProduct(productId){
-        setCartProducts(prev =>{
+        setCartProducts((prev) => {
+            console.log(prev);
             const pos = prev.indexOf(productId);
+            console.log(pos);
+            if (prev.length === 1) ls.removeItem("cart");
             if (pos !== -1) {
-                return prev.filter((value,index) => index !== pos);
+              return prev.filter((_, index) => index !== pos);
             }
             return prev;
-        });
+          });
     }
     function clearCart(){
         setCartProducts([]);
