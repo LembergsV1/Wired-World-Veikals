@@ -113,7 +113,7 @@ export default function AccountPage(){
                                                     <p>Pieslēdzieties lai redzētu savus pasūtījumus</p>
                                                 )}
                                                 {orders.length > 0 && orders.map(o => (
-                                                    <SingleOrder {...o} />
+                                                    <SingleOrder key={o._id} {...o} />
                                                 ))}
                                             </div>
                                         )} 
