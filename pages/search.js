@@ -56,7 +56,7 @@ export default function SearchPage() {
                         placeholder="Meklēt preci"/>
                     </InputWrapper>
                     {!isLoading && phrase !== '' && products.length === 0 && (
-                        <h2>Netika atrasta prece ar nosaukumu "{phrase}"</h2>
+                        <h2>Netika atrasta prece ar nosaukumu &quot;{phrase}&quot;</h2>
                     )}
                     {isLoading && (
                         <Spinner fullWidth={true} />
