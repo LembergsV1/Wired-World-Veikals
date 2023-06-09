@@ -60,10 +60,11 @@ const Column = styled.div`
     align-items center;
 `;
 const ButtonsWrapper = styled.div`
-    display: flex;
-    gap:10px;
-    margin-top:25px;
-    align-items: center;
+    margin: 20px;
+    padding: 20px;
+    gap: 10px;
+    display:flex;
+    justify-content:center;
 `;
 
 const CenterImg = styled.div`
