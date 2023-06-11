@@ -110,7 +110,14 @@ export default function AccountPage(){
                                         {ordersLoaded && (
                                             <div>
                                                 {orders.length === 0 && (
-                                                    <p>Pieslēdzieties lai redzētu savus pasūtījumus</p>
+                                                    <>
+                                                    {session && (
+                                                        <p>Vēl nekas nav nopirkts</p>
+                                                    )}
+                                                    {!session && (
+                                                    <p>Lai redzētu pasūtījumus ir nepieciešams pieslēgties</p>
+                                                )}
+                                                    </>
                                                 )}
                                                 {orders.length > 0 && orders.map(o => (
                                                     <SingleOrder key={o._id} {...o} />
