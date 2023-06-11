@@ -110,11 +110,11 @@ export default function AccountPage(){
                                         {ordersLoaded && (
                                             <div>
                                                 {orders.length === 0 && (
-                                                    <p>Pieslēdzieties lai redzētu savus pasūtījumus</p>
+                                                    <p>Pieslēdzieties lai redzētu savus pasūtījumus,(Ja veicāt pasūtījumu bez profila pasūtījuma rekvizīti tiks jums atsūtīti)</p>
                                                 )}
                                                 {orders.length > 0 && orders.map(o => (
                                                     <SingleOrder key={o._id} {...o} />
-                                                ))}
+                                                ))}s
                                             </div>
                                         )} 
                                     </>
